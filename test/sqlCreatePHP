@@ -1,0 +1,38 @@
+<?php
+$connect = mysqli_connect('localhost','root', '', 'social');
+if(!$connect){
+    echo 'Ошибка подключения';
+};
+
+$sqlPosts = "CREATE TABLE `social`.`posts` (
+    `id` INT(3) NOT NULL AUTO_INCREMENT ,
+    `user_id` INT(3) NOT NULL ,
+    `title` TEXT NULL DEFAULT NULL ,
+    `body` TEXT NULL DEFAULT NULL ,
+    PRIMARY KEY (`id`)
+    ) ENGINE = InnoDB";
+$sqlComments = "CREATE TABLE `social`.`comments` (
+    `id` INT(3) NOT NULL AUTO_INCREMENT ,
+    `post_id` INT(3) NOT NULL ,
+    `name` VARCHAR(100) NOT NULL ,
+    `email` TEXT NULL DEFAULT NULL ,
+    `body` TEXT NULL DEFAULT NULL ,
+    PRIMARY KEY (`id`)
+    ) ENGINE = InnoDB";    
+    if(mysqli_query($connect, $sqlPosts)){
+        echo "Таблица успешно создана.";
+        echo "<br>";
+    } else{
+        echo "ERROR: Не удалось выполнить $sqlPosts. " . mysqli_error($connect);
+    };
+    if(mysqli_query($connect, $sqlComments)){
+        echo "Таблица успешно создана.";
+    } else{
+        echo "ERROR: Не удалось выполнить $sqlComments. " . mysqli_error($connect);
+        echo "<br>";
+    };
+     
+    mysqli_close($connect);
+
+
+?>
