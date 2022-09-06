@@ -1,0 +1,83 @@
+<?php
+
+$json = file_get_contents('https://jsonplaceholder.typicode.com/posts');
+$json2 = file_get_contents('https://jsonplaceholder.typicode.com/comments');
+
+$posts = json_decode($json, true) ?? [];
+$comment = json_decode($json2, true) ?? [];
+
+
+$hostname = 'localhost';
+$dbname = 'social';
+$username ='root';
+$password = '';
+
+
+$connect = new PDO ("mysql::host=$hostname;dbname=$dbname", $username, $password);
+if($connect){
+    echo "Подключение к бд: Успешно.";
+    echo "<br>";
+};
+
+
+//Posts
+$userid = [];
+$title = [];
+$body = [];
+
+foreach($posts as $key => $value){
+    array_push($userid, $value[userId]);
+};
+foreach($posts as $key => $value){
+    array_push($title, $value[title]);
+};
+foreach($posts as $key => $value){
+    array_push($body, $value[body]);
+};
+
+//Comments
+$postid = [];
+$name = [];
+$email = [];
+$body2 = [];
+
+foreach($comment as $key => $value){
+    array_push($postid, $value[postId]);
+};
+foreach($comment as $key => $value){
+    array_push($name, $value[name]);
+};
+foreach($comment as $key => $value){
+    array_push($email, $value[email]);
+};
+foreach($comment as $key => $value){
+    array_push($body2, $value[body]);
+};
+
+for($i = 0; $i <= 99; $i++){
+    
+$connect->query("INSERT INTO `posts` (`id`, `user_id`, `title`, `body`) VALUES 
+(NULL, '$userid[$i]', '$title[$i]', '$body[$i]')");
+$s = 25;
+};
+if($s == 25){
+    echo "<br>";
+    echo "Загружено 100 записей.";
+    echo "<br>";
+};
+
+
+for($m = 0; $m <= 500; $m++){
+
+    $connect->query("INSERT INTO `comments` (`id`, `post_id`, `name`, `email`, `body`) VALUES 
+    (NULL, '$postid[$m]', '$name[$m]', '$email[$m]', '$body2[$m]')");
+    $k = 25;
+};
+if($k == 25){
+    echo "<br>";
+    echo "Загружено 500 комментариев.";
+    echo "<br>";
+};
+
+
+?>
